@@ -1,7 +1,10 @@
 'use strict';
 
 const { Sequelize, DataTypes } = require('sequelize');
+const collectionClass = require('./collection-class');
 const whiskeySchema = require('./whiskey.schema');
+const beerSchema = require('./beer.schema');
+
 
 const DATABASE_URL = process.env.NODE_ENV === 'test'
   ? 'sqlite::memory'
@@ -14,11 +17,15 @@ const sequelize = new Sequelize(DATABASE_URL, {
   },
 });
 
-// create Whiskey Model
-
 const WhiskeyModel = whiskeySchema(sequelize, DataTypes);
+const BeerModel = beerSchema(sequelize, DataTypes);
+
+// create associations between tables
+
+
 
 module.exports = {
   sequelize,
-  WhiskeyModel,
+  collectionClass: new collectionClass(WhiskeyModel),
+  BeerModel,
 };

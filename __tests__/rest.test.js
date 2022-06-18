@@ -54,6 +54,7 @@ describe('Testing REST API', () => {
   test('Get one whiskey', async () => {
     let response = await mockRequest.get('/whiskey/1');
     expect(response.status).toEqual(200);
+    expect(response.body.id).toEqual(1);
   });
 
   test('Update one whiskey', async () => {

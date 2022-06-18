@@ -2,8 +2,6 @@
 
 const express = require('express');
 const { whiskeyInterface } = require('../models');
-const notFoundHandler = require('../error-handlers/404');
-const serverErrorHandler = require('../error-handlers/500');
 const logger = require('../middleware/logger');
 
 const router = express.Router();
@@ -44,9 +42,5 @@ router.delete('/whiskey/:id', async (req, res, next) => {
   await whiskeyInterface.delete(id);
   res.status(200).send(deletedWhiskey);
 });
-
-router.use('*', notFoundHandler);
-
-router.use(serverErrorHandler);
 
 module.exports = router;

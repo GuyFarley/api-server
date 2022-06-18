@@ -2,16 +2,15 @@
 
 const express = require('express');
 const { beerInterface } = require('../models');
-const notFoundHandler = require('../error-handlers/404');
-const serverErrorHandler = require('../error-handlers/500');
 const logger = require('../middleware/logger');
 
 const router = express.Router();
 
 router.use(logger);
-
+console.log('adding beer routes');
 // post
 router.post('/beer', async (req, res, next) => {
+  console.log('post beer');
   let beer = req.body;
   let response = await beerInterface.create(beer);
   res.status(200).send(response);
@@ -43,9 +42,5 @@ router.delete('/beer/:id', async (req, res, next) => {
   await beerInterface.delete(id);
   res.status(200).send(deletedBeer);
 });
-
-router.use('*', notFoundHandler);
-
-router.use(serverErrorHandler);
 
 module.exports = router;

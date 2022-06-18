@@ -8,12 +8,14 @@ const beerSchema = require('./beer.schema');
 
 const DATABASE_URL = process.env.NODE_ENV === 'test'
   ? 'sqlite::memory'
-  : process.env.DATABASE_URL || 'postgres://localhost:5432/gf401-api-app';
+  : process.env.DATABASE_URL || 'postgres://localhost:5432/gf-lab04';
 
 const sequelize = new Sequelize(DATABASE_URL, {
   dialectOptions: {
-    require: true,
-    rejectUnauthorized: false,
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
   },
 });
 
@@ -22,10 +24,11 @@ const BeerModel = beerSchema(sequelize, DataTypes);
 
 // create associations between tables
 
-
+WhiskeyModel.hasMany(BeerModel, { foreignKey: 'beerId', sourceKey: 'id' });
+BeerModel.belongsTo(WhiskeyModel, { foreignKey: 'beerId', targetKey: 'id' });
 
 module.exports = {
   sequelize,
-  collectionClass: new collectionClass(WhiskeyModel),
-  BeerModel,
+  whiskeyInterface: new collectionClass(WhiskeyModel),
+  beerInterface: new collectionClass(BeerModel),
 };

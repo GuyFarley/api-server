@@ -35,10 +35,10 @@ class collectionClass {
     }
   }
 
-  // need to fix
-  async update(id) {
+  async update(data, id) {
     try {
-      let updatedInstance = await this.model.update({ where: { id } });
+      await this.model.update(data, { where: { id } });
+      let updatedInstance = this.model.findOne({ where: { id } });
       return updatedInstance;
     } catch (err) {
       console.error(err);
